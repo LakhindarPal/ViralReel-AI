@@ -16,8 +16,8 @@ Unlike basic wrappers, this project implements a custom rendering engine using O
 
 ### 🔴 [Try the Live Demo on Hugging Face](https://huggingface.co/spaces/LakhindarPal/ViralReel-AI)
 
-![ViralReel AI Preview](preview.png)
-_(Screenshot of the application interface)_
+![ViralReel AI Preview](demo.gif)
+_(Screen recording of the application interface)_
 
 ---
 

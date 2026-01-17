@@ -2,6 +2,7 @@
 import torch
 import numpy as np
 import os, cv2, json, subprocess, re
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 import gradio as gr
@@ -33,7 +34,10 @@ class ContentBrain:
     def __init__(self):
         print(f"🚀 Loading WhisperX on {DEVICE}...")
         self.model = whisperx.load_model(
-            "large-v3-turbo", DEVICE, compute_type="float16", vad_method="silero"
+            "large-v3-turbo",
+            DEVICE,
+            compute_type="float16" if DEVICE == "cuda" else "int8",
+            vad_method="silero",
         )
         self.align_model, self.metadata = whisperx.load_align_model(
             language_code="en", device=DEVICE
@@ -74,7 +78,13 @@ class ContentBrain:
 
 class SmartCam:
     def __init__(self):
-        base_opts = python.BaseOptions(model_asset_path="detector.tflite")
+        model_path = "detector.tflite"
+        if not os.path.exists(model_path):
+            url = "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite"
+            urllib.request.urlretrieve(url, model_path)
+
+        abs_model_path = os.path.abspath(model_path)
+        base_opts = python.BaseOptions(model_asset_path=abs_model_path)
         opts = vision.FaceDetectorOptions(
             base_options=base_opts, min_detection_confidence=0.5
         )
