@@ -1,0 +1,11 @@
+torch
+torchaudio
+numpy
+
+google-genai
+git+https://github.com/m-bain/whisperx.git
+gradio
+opencv-python
+gdown
+yt-dlp
+mediapipe
